@@ -1,0 +1,37 @@
+<!-- success.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pago Exitoso</title>
+</head>
+<body>
+  <h1>¡Gracias por tu compra!</h1>
+  <p>Estamos procesando tu pedido.</p>
+  <a href="elements.html">Volver al catálogo</a>
+
+  <script>
+    // Capturar el pago automáticamente
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('token');
+
+    if (orderId) {
+      fetch(`http://localhost:8080/api/paypal/capture-order/${orderId}`, {
+        method: 'POST'
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'COMPLETED') {
+          console.log('Pago capturado con éxito');
+        } else {
+          alert('El pago no se completó correctamente.');
+        }
+      })
+      .catch(err => {
+        console.error('Error al capturar:', err);
+        alert('No se pudo confirmar el pago.');
+      });
+    }
+  </script>
+</body>
+</html>
