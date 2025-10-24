@@ -58,7 +58,7 @@ public class PayPalService {
         headers.set("Authorization", "Bearer " + accessToken);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String body = String.format("""
+        String body = """
             {
               "intent": "CAPTURE",
               "purchase_units": [
@@ -71,7 +71,7 @@ public class PayPalService {
                 }
               ]
             }
-            """, description, currency, amount);
+            """.formatted(description, currency, amount);
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
         ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
